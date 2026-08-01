@@ -30,27 +30,37 @@ module FIFO #(parameter DEPTH=8, DATAW = 8)(
     output full,
     output empty
     );
+    localparam PTRW = $clog2(DEPTH);
+    reg [PTRW-1:0]     w_ptr, r_ptr;      // address pointers (mod DEPTH, not free binary wrap)
+    reg [PTRW:0]        count;
+    reg [DATAW -1:0] fifo [0:DEPTH-1];
     
-    reg [$clog2(DEPTH)-1:0] w_ptr, r_ptr;  //make it one bit wider than needed
-    reg [7:0] fifo [0:DEPTH-1];
+    assign full  = (count == DEPTH);
+    assign empty = (count == 0);
+    
+    wire do_write = w_en & !full;
+    wire do_read  = r_en & !empty;
     
     //reset 
     always @(posedge clk) begin
         if(!rstn) begin
             w_ptr <=0; r_ptr <= 0;
             data_out <= 0;
-        end
-        else begin 
-            if (w_en & !full) begin   //write data into fifo
+            count <= 0;
+        end else begin
+            if (do_write) begin
                 fifo[w_ptr] <= data_in;
-                w_ptr <= w_ptr + 1;
+                w_ptr       <= (w_ptr == DEPTH-1) ? {PTRW{1'b0}} : w_ptr + 1'b1;
             end
-            if (r_en & !empty) begin  //read data from fifo
+            if (do_read) begin
                 data_out <= fifo[r_ptr];
-                r_ptr <= r_ptr + 1;
+                r_ptr    <= (r_ptr == DEPTH-1) ? {PTRW{1'b0}} : r_ptr + 1'b1;
             end
+            case ({do_write, do_read})
+                2'b10:   count <= count + 1'b1;
+                2'b01:   count <= count - 1'b1;
+                default: count <= count;
+            endcase
         end
-    end
-    assign full = ((w_ptr+1'b1) == r_ptr);
-    assign empty = (w_ptr == r_ptr);        
+    end      
 endmodule
