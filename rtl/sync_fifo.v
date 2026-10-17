@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module FIFO #(parameter DEPTH=8, DATAW = 8)(
+module sync_fifo #(parameter DEPTH=8, DATAW = 8)(
     input clk,
     input rstn,
     input w_en, 
