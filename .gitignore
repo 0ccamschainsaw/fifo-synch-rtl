@@ -1,0 +1,21 @@
+# Vivado / xsim generated
+*.jou
+*.log
+*.str
+*.pb
+*.wdb
+xsim.dir/
+.Xil/
+*.cache/
+*.hw/
+*.runs/
+*.sim/
+*.ip_user_files/
+*.xpr
+# Build outputs
+build/
+work/
+obj_dir/
+reports/
+__pycache__/
+*.pyc
