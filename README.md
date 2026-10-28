@@ -70,7 +70,7 @@ existing directed-test waveform.
 ## Run the regression
 
 With Vivado's `xvlog`, `xelab`, and `xsim` on `PATH`:
-D:\AMDDesignTools\2025.2\Vivado\settings64.bat
+D:\AMDDesignTools\2025.2\Vivado\settings64.bat (just a placeholder, change according to your PC)
 
 ```powershell
 python scripts\run_sim.py --seeds 20 --sweep
