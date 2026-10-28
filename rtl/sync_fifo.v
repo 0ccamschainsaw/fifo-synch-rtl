@@ -34,6 +34,12 @@ module sync_fifo #(parameter DEPTH=8, DATAW = 8)(
     reg [PTRW-1:0]     w_ptr, r_ptr;      // address pointers (mod DEPTH, not free binary wrap)
     reg [PTRW:0]        count;
     reg [DATAW -1:0] fifo [0:DEPTH-1];
+
+    generate
+        if ((DEPTH < 2) || (DATAW < 1)) begin : g_invalid_parameters
+            initial $error("sync_fifo requires DEPTH >= 2 and DATAW >= 1");
+        end
+    endgenerate
     
     assign full  = (count == DEPTH);
     assign empty = (count == 0);
