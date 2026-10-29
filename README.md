@@ -91,5 +91,4 @@ per-simulation timeout, and prints an exact replay command for failed runs.
 ## Limitations and extensions
 
 This design is synchronous and does not provide asynchronous clock-domain
-crossing
-include those features after the present behavior and verification are stable.
+crossing.
